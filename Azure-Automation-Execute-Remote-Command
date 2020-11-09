@@ -1,0 +1,8 @@
+$ServicePrincipalConnection = Get-AutomationConnection -Name 'AzureRunAsConnection'
+Add-AzAccount -ServicePrincipal -TenantId $ServicePrincipalConnection.TenantId -ApplicationId $ServicePrincipalConnection.ApplicationId -CertificateThumbprint $ServicePrincipalConnection.CertificateThumbprint
+$rgname ="resourceGroupName"
+$vmname ="vmName"
+$ScriptToRun = "Script here"
+Out-File -InputObject $ScriptToRun -FilePath ScriptToRun.ps1 
+Invoke-AzVMRunCommand -ResourceGroupName $rgname -Name $vmname -CommandId 'RunPowerShellScript' -ScriptPath ScriptToRun.ps1
+Remove-Item -Path ScriptToRun.ps1
